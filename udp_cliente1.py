@@ -10,7 +10,7 @@ puerto = int(sys.argv[2])
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 linea = ""
 while linea != "FIN":
-    linea = input("Ponga su texto, ingrese 'FIN' para cerrar")
+    linea = input("Ponga su texto, ingrese 'FIN' para cerrar: ")
     s.sendto(linea.encode("utf8"), (host,puerto))
 
 exit(0)
