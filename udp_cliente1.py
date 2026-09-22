@@ -12,5 +12,9 @@ linea = ""
 while linea != "FIN":
     linea = input("Ponga su texto, ingrese 'FIN' para cerrar: ")
     s.sendto(linea.encode("utf8"), (host,puerto))
+    datagrama, origen = s.recvfrom(1024)  # 1024 es el máximo tamaño esperado
+    print("Se ha recibido un datagrama desde", origen)
+    print("Contiene lo siguiente:")
+    print(datagrama.decode("utf-8"))
 
 exit(0)
