@@ -4,13 +4,11 @@ from flask_migrate import Migrate
 
 from config import app_config
 
-# Inicializar db, que conecta con la base de datos
 db = SQLAlchemy()
 
 
 def create_app(config_name):
 
-    # Crear y configurar la aplicación
     app = Flask(__name__, instance_relative_config=True)
 
     app.config.from_object(app_config[config_name])
@@ -20,12 +18,20 @@ def create_app(config_name):
 
     migrate = Migrate(app, db)
 
-    # Registrar el Blueprint HTML
+    # Registrar Blueprint HTML
     from .html import html as html_blueprint
 
     app.register_blueprint(
         html_blueprint,
         url_prefix='/html'
+    )
+
+    # Registrar Blueprint API
+    from .api import api as api_blueprint
+
+    app.register_blueprint(
+        api_blueprint,
+        url_prefix='/api'
     )
 
     return app
