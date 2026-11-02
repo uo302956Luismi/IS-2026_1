@@ -1,14 +1,16 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 from config import app_config
 
+# Inicializar db, que conecta con la base de datos
 db = SQLAlchemy()
 
 
 def create_app(config_name):
 
+    # Crear y configurar la aplicación
     app = Flask(__name__, instance_relative_config=True)
 
     app.config.from_object(app_config[config_name])
@@ -18,19 +20,12 @@ def create_app(config_name):
 
     migrate = Migrate(app, db)
 
-    from app import models
+    # Registrar el Blueprint HTML
+    from .html import html as html_blueprint
 
-    @app.route('/amigos')
-    def hola_mundo():
-
-        # Obtener lista de amigos de la base de datos
-        from app.models import Amigo
-        amigos = Amigo.query.all()
-
-        # Retornar el HTML con la tabla de amigos
-        return render_template(
-            'tabla_amigos.html',
-            amigos=amigos
-        )
+    app.register_blueprint(
+        html_blueprint,
+        url_prefix='/html'
+    )
 
     return app
