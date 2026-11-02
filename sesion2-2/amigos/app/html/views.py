@@ -7,10 +7,6 @@ from ..models import Amigo
 
 @html.route("/amigos")
 def tabla_amigos():
-    """
-    Obtiene la lista de amigos de la base de datos
-    y la devuelve en una tabla HTML.
-    """
 
     amigos = Amigo.query.all()
 
@@ -22,9 +18,6 @@ def tabla_amigos():
 
 @html.route("/delete_amigo/<int:id>")
 def delete_amigo(id):
-    """
-    Borra un amigo de la base de datos
-    """
 
     amigo = Amigo.query.get_or_404(id)
 
@@ -36,9 +29,6 @@ def delete_amigo(id):
 
 @html.route("/edit_amigo/<int:id>")
 def edit_amigo(id):
-    """
-    Presenta un formulario para modificar un amigo
-    """
 
     amigo = Amigo.query.get_or_404(id)
 
@@ -50,9 +40,6 @@ def edit_amigo(id):
 
 @html.route("/new_amigo/")
 def new_amigo():
-    """
-    Presenta un formulario para crear un nuevo amigo
-    """
 
     return render_template(
         "edit_amigo.html",
@@ -75,11 +62,13 @@ def save_amigo():
 
         lati = request.form.get("lati", "0")
         longi = request.form.get("longi", "0")
+        device = request.form.get("device", "")
 
         amigo = Amigo(
             name=name,
             lati=lati,
-            longi=longi
+            longi=longi,
+            device=device
         )
 
         db.session.add(amigo)
@@ -100,10 +89,16 @@ def save_amigo():
         if lati:
             amigo.lati = lati
 
-        longi = request.form.get("longi", "0")
+        longi = request.form.get("longi")
 
         if longi:
             amigo.longi = longi
+
+        # El dispositivo puede ser una cadena vacía
+        device = request.form.get("device")
+
+        if device is not None:
+            amigo.device = device
 
         db.session.commit()
 
