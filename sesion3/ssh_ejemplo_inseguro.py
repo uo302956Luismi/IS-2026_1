@@ -1,8 +1,10 @@
 import paramiko
 import time
+import getpass
+
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-password = input("Contraseña: ")
+password = getpass.getpass("Clave del usuario alumno: ")
 client.connect('localhost', username='uo302956', password=password) 
 print("Conectado!!")
 
